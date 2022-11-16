@@ -1,21 +1,20 @@
 [package]
-
-name = "queryst"
-version = "2.1.1-alpha.0"
+name = "better-qs"
+edition = "2021"
+version = "2.2.0"
 authors = ["Stanislav Panferov <fnight.m@gmail.com>", "Robert Lord <hello@lord.io>"]
-description = "Rust query string parser with nesting support, forked to update Serde"
-repository = "https://github.com/rustless/queryst"
+description = "Rust query string parser with nesting support"
+repository = "https://github.com/tyrchen/better-qs"
 keywords = ["json", "web", "url", "parser"]
 license = "MIT"
-rust = "1.13"
 
 [features]
 default = ["regex1"]
 regex1 = ["regex", "lazy_static"]
 
 [dependencies]
-serde = "^1"
-serde_json = "^1"
-url = "^1"
-regex = { version = "^0.2", optional = true }
-lazy_static = { version = "^1", optional = true }
+lazy_static = { version = "1.4.0", optional = true }
+percent-encoding = "2.2.0"
+regex = { version = "1.7.0", optional = true }
+serde = "1.0.147"
+serde_json = "1.0.87"

@@ -1,16 +1,12 @@
-## What is Queryst?
+## What is better-qs?
 
-**This is a fork of the original, with serde and serde_json updated to 0.9**
-
-[![Build Status](https://travis-ci.org/rustless/queryst.svg?branch=master)](https://travis-ci.org/lord/queryst-prime)
-
-A query string parsing library for Rust inspired by https://github.com/hapijs/qs. A part of REST-like API micro-framework [Rustless].
+A query string parsing library for Rust inspired by https://github.com/hapijs/qs. Forked from [queryst](https://github.com/s-panferov/queryst).
 
 ```toml
 # Cargo.toml
 
 [dependencies]
-queryst = "1"
+better-qs = "2"
 ```
 
 [API docs](http://rustless.org/queryst/doc/queryst)

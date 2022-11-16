@@ -1,4 +1,4 @@
-use serde_json::{Value, Map};
+use serde_json::{Map, Value};
 
 type Object = Map<String, Value>;
 
@@ -22,8 +22,8 @@ fn index(obj: &Object) -> Option<usize> {
             Ok(idx) if index <= idx => {
                 index = idx;
                 has_index = true;
-            },
-            _ => ()
+            }
+            _ => (),
         }
     }
 
@@ -37,13 +37,13 @@ fn index(obj: &Object) -> Option<usize> {
 pub fn next_index(obj: &Object) -> usize {
     match index(obj) {
         Some(idx) => idx + 1,
-        None => 0
+        None => 0,
     }
 }
 
 pub fn create_array() -> Value {
     let vec: Vec<Value> = vec![];
-    return Value::Array(vec);
+    Value::Array(vec)
 }
 
 pub fn push_item_to_array(array: &mut Value, item: Value) {
