@@ -8,6 +8,7 @@ use percent_encoding::percent_decode;
 #[cfg(feature = "regex1")]
 use regex::Regex;
 use serde_json::{Map, Number, Value};
+use thiserror::Error;
 
 #[cfg(feature = "regex1")]
 lazy_static! {
@@ -17,17 +18,12 @@ lazy_static! {
 
 type Object = Map<String, Value>;
 
-#[derive(Debug)]
-#[allow(missing_copy_implementations)]
-pub enum ParseErrorKind {
-    DecodingError,
+#[derive(Debug, Error)]
+pub enum ParseError {
+    #[error("Failed to decode: {0}")]
+    DecodingError(String),
+    #[error("Other")]
     Other,
-}
-
-#[derive(Debug)]
-pub struct ParseError {
-    pub kind: ParseErrorKind,
-    pub message: String,
 }
 
 pub type ParseResult<T> = Result<T, ParseError>;
@@ -69,24 +65,14 @@ fn parse_key(key: &str) -> ParseResult<Vec<String>> {
     if let Some(captures) = PARENT_REGEX.captures(key) {
         match decode_component(captures.get(1).unwrap().as_str()) {
             Ok(decoded_key) => keys.push(decoded_key),
-            Err(err_msg) => {
-                return Err(ParseError {
-                    kind: ParseErrorKind::DecodingError,
-                    message: err_msg,
-                })
-            }
+            Err(err_msg) => return Err(ParseError::DecodingError(err_msg)),
         }
     };
 
     for captures in CHILD_REGEX.captures_iter(key) {
         match decode_component(captures.get(1).unwrap().as_str()) {
             Ok(decoded_key) => keys.push(decoded_key),
-            Err(err_msg) => {
-                return Err(ParseError {
-                    kind: ParseErrorKind::DecodingError,
-                    message: err_msg,
-                })
-            }
+            Err(err_msg) => return Err(ParseError::DecodingError(err_msg)),
         }
     }
 
@@ -100,12 +86,7 @@ fn parse_key(key: &str) -> ParseResult<Vec<String>> {
     match key.split(|c| c == '[' || c == ']').next() {
         Some(parent) if !parent.is_empty() => match decode_component(parent) {
             Ok(decoded_key) => keys.push(decoded_key),
-            Err(err_msg) => {
-                return Err(ParseError {
-                    kind: ParseErrorKind::DecodingError,
-                    message: err_msg,
-                })
-            }
+            Err(err_msg) => return Err(ParseError::DecodingError(err_msg)),
         },
         _ => (),
     }
@@ -187,12 +168,7 @@ pub fn parse(params: &str) -> ParseResult<Value> {
     let mut obj = Value::Object(tree);
     let decoded_params = match decode_component(&params.replace('+', " ")) {
         Ok(val) => val,
-        Err(err) => {
-            return Err(ParseError {
-                kind: ParseErrorKind::DecodingError,
-                message: err,
-            })
-        }
+        Err(err) => return Err(ParseError::DecodingError(err)),
     };
     let pairs = parse_pairs(&decoded_params);
     for &(key, value) in pairs.iter() {
@@ -214,12 +190,7 @@ pub fn parse(params: &str) -> ParseResult<Value> {
                         _ => Value::String(v),
                     }
                 }
-                Err(err) => {
-                    return Err(ParseError {
-                        kind: ParseErrorKind::DecodingError,
-                        message: err,
-                    })
-                }
+                Err(err) => return Err(ParseError::DecodingError(err)),
             },
         };
         let partial = apply_object(key_chain, decoded_value);
