@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0] - 2022-11-16
+
+[4a3cb4c](4a3cb4c04a86d10985bb36f886d4b4b89b282920)...[f41d3f0](f41d3f0c1b9c79be471323710e84f08aa10a37d5)
+
+### Features
+
+- Use thiserror for error reporting ([f41d3f0](f41d3f0c1b9c79be471323710e84f08aa10a37d5) - 2022-11-16 by Tyr Chen)
+
 ## [2.2.0] - 2022-11-16
 
 [1b83ec2](1b83ec2bc02c695b8a8464120e6bc456981c0a6a)...[4a3cb4c](4a3cb4c04a86d10985bb36f886d4b4b89b282920)
