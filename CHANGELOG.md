@@ -2,11 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [2.2.0] - 2022-11-16
+
+[1b83ec2](1b83ec2bc02c695b8a8464120e6bc456981c0a6a)...[4a3cb4c](4a3cb4c04a86d10985bb36f886d4b4b89b282920)
 
 ### Features
 
-- Move the code to 2021 edition, support integer/float/boolean parsing, and add more tests ([11b8aa6](11b8aa6ba3f2bc50da580aa550e790815cdf4f09) - 2022-11-16 by Tyr Chen)
+- Move the code to 2021 edition, support integer/float/boolean parsing, and add more tests ([4a3cb4c](4a3cb4c04a86d10985bb36f886d4b4b89b282920) - 2022-11-16 by Tyr Chen)
 
 ## [2.0.2] - 2020-06-06
 
