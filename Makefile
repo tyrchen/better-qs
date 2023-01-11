@@ -1,9 +1,17 @@
-doc:
-	git checkout gh-pages
-	cargo doc
-	cp -r target/doc doc
-	git add --all
-	msg="doc(*): rebuilding docs `date`"
-	git commit -m "$msg"
-	git push -f origin gh-pages
-	git checkout master
+build:
+	@cargo build
+
+cov:
+	@cargo llvm-cov nextest --all-features --workspace --lcov --output-path coverage/lcov-$(shell date +%F).info
+
+test:
+	@CELLA_ENV=test cargo nextest run --all-features
+
+release:
+	@cargo release tag --execute
+	@git cliff -o CHANGELOG.md
+	@git commit -a -m "Update CHANGELOG.md" || true
+	@git push origin master
+	@cargo release push --execute
+
+.PHONY: build cov test release
